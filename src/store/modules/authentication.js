@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { userCollection } from '@/collections/users.js';
 
 export default {
   namespaced: true,
@@ -17,11 +18,13 @@ export default {
     init({ commit }) {
       firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
-          console.log(user);
+          const userInfo = await userCollection.doc(user.uid).get()
           commit('updateUser', {
             profilePicture: user.photoURL,
             name: user.displayName,
             email: user.email,
+            uid: user.uid,
+            ...userInfo.data()
           });
         } else {
           commit('updateUser', null);

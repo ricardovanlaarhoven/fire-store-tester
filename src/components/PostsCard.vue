@@ -8,7 +8,7 @@
             <v-list-item-title>{{ post.title }}</v-list-item-title>
             <v-list-item-subtitle>{{ dayjs(post.date).format('LL') }}</v-list-item-subtitle>
           </v-list-item-content>
-          <v-list-item-action>
+          <v-list-item-action v-if="user && user.admin">
             <v-btn icon @click="deletePost(post.id)"><v-icon>mdi-close</v-icon></v-btn>
           </v-list-item-action>
         </v-list-item>
@@ -27,7 +27,7 @@
 import dayjs from '@/plugins/dayjs.js';
 import { postCollection } from '@/collections/posts.js';
 import AddPostDialog from '@/components/addPostDialog.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'PostsCard',
@@ -44,6 +44,7 @@ export default {
     ...mapGetters({
       isLoggedIn: 'authentication/isLoggedIn',
     }),
+    ...mapState('authentication', { user: 'user' }),
   },
   methods: {
     dayjs,
