@@ -8,6 +8,9 @@
             <v-list-item-title>{{ post.title }}</v-list-item-title>
             <v-list-item-subtitle>{{ dayjs(post.date).format('LL') }}</v-list-item-subtitle>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-btn icon @click="deletePost(post.id)"><v-icon>mdi-close</v-icon></v-btn>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-card-text>
@@ -49,6 +52,10 @@ export default {
     },
     addPost(post) {
       this.posts.push(post);
+    },
+    async deletePost(id) {
+      await postCollection.doc(id).delete();
+      this.posts = this.posts.filter(post => post.id !== id);
     },
     async fetch() {
       this.posts = [];
