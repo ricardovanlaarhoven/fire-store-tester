@@ -1,5 +1,5 @@
 <template>
-  <v-dialog width="500" v-bind="$attrs">
+  <v-dialog width="500" v-bind="$attrs" @click:outside="$emit('input', false);">
     <v-card>
       <v-card-title>Create a post</v-card-title>
       <v-card-text>

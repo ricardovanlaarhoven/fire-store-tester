@@ -9,8 +9,12 @@
 <script>
 
 import PostsCard from '@/components/PostsCard.vue';
+
 export default {
   name: 'Home',
   components: { PostsCard },
+  async created() {
+
+  },
 };
 </script>
