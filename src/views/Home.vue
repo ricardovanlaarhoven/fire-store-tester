@@ -1,11 +1,16 @@
 <template>
-  <div>
-    Homepage
-  </div>
+  <v-row>
+    <v-col cols="12" lg="4">
+      <PostsCard/>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-  export default {
-    name: 'Home',
-  }
+
+import PostsCard from '@/components/PostsCard.vue';
+export default {
+  name: 'Home',
+  components: { PostsCard },
+};
 </script>
