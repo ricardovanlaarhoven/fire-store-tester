@@ -12,9 +12,11 @@
       </v-list>
     </v-card-text>
     <AddPostDialog @add="addPost" v-model="dialog"/>
-    <v-btn fab absolute bottom right color="primary" @click="openPostDialog">
-      <v-icon>mdi-pencil-plus-outline</v-icon>
-    </v-btn>
+    <v-scale-transition>
+      <v-btn fab absolute bottom right color="primary" @click="openPostDialog" v-if="isLoggedIn">
+        <v-icon>mdi-pencil-plus-outline</v-icon>
+      </v-btn>
+    </v-scale-transition>
   </v-card>
 </template>
 
@@ -22,6 +24,7 @@
 import dayjs from '@/plugins/dayjs.js';
 import { postCollection } from '@/collections/posts.js';
 import AddPostDialog from '@/components/addPostDialog.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'PostsCard',
@@ -34,6 +37,11 @@ export default {
     posts: [],
     dialog: false,
   }),
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'authentication/isLoggedIn',
+    }),
+  },
   methods: {
     dayjs,
     openPostDialog() {
