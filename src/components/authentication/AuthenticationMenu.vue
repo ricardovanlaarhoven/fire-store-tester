@@ -51,8 +51,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
-import { githubProvider } from '@/plugins/googleAuth.js';
+import { getAuth, GithubAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { mapState } from 'vuex';
 import Avatar from '@/components/authentication/Avatar.vue';
 
@@ -60,11 +59,26 @@ export default {
   name: 'AuthenticationMenu',
   components: { Avatar },
   methods: {
-    login() {
-      firebase.auth().signInWithPopup(githubProvider);
+    async login() {
+      const auth = getAuth();
+      const provider = new GithubAuthProvider
+      try {
+        const result = await signInWithPopup(auth, provider);
+        console.log(result);
+      } catch (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = provider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+      }
     },
     logout() {
-      firebase.auth().signOut();
+      const auth = getAuth();
+      signOut(auth)
     },
   },
   computed: {

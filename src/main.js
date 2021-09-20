@@ -5,7 +5,7 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 
-require('./plugins/firestore');
+require('@/plugins/firebase/store.js');
 
 Vue.config.productionTip = false;
 

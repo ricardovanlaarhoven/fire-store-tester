@@ -25,9 +25,10 @@
 
 <script>
 import dayjs from '@/plugins/dayjs.js';
-import { postCollection } from '@/collections/posts.js';
 import AddPostDialog from '@/components/addPostDialog.vue';
 import { mapGetters, mapState } from 'vuex';
+import { collection, getDocs } from 'firebase/firestore';
+import { database } from '@/plugins/firebase/store.js';
 
 export default {
   name: 'PostsCard',
@@ -55,14 +56,14 @@ export default {
       this.posts.push(post);
     },
     async deletePost(id) {
-      await postCollection.doc(id).delete();
+      await collection(database, 'posts').doc(id).delete();
       this.posts = this.posts.filter(post => post.id !== id);
     },
     async fetch() {
       this.posts = [];
       this.isLoading = true;
-      const response = await postCollection.get();
-      response.forEach((post) => {
+      const querySnapshot = await getDocs(collection(database, 'posts'));
+      querySnapshot.forEach((post) => {
         const data = post.data();
         this.posts.push({
           id: post.id,

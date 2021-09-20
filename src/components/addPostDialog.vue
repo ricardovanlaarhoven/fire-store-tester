@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import { postCollection } from '@/collections/posts.js';
+import { addDoc, collection } from 'firebase/firestore';
+import { database } from '@/plugins/firebase/store.js';
 
 export default {
   name: 'addPostDialog',
@@ -30,7 +31,8 @@ export default {
         title: this.form.title,
         date: new Date(this.form.date),
       };
-      const docRef = await postCollection.add(newPost);
+      const docRef = await addDoc(collection(database, 'posts'), newPost);
+
       this.$emit('add',{ id: docRef.id, ...newPost });
       this.$emit('input', false);
       this.$refs.form.reset();

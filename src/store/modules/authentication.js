@@ -1,5 +1,6 @@
-import firebase from 'firebase';
-import { userCollection } from '@/collections/users.js';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from 'firebase/firestore';
+import { database } from '@/plugins/firebase/store.js';
 
 export default {
   namespaced: true,
@@ -16,9 +17,11 @@ export default {
   },
   actions: {
     init({ commit }) {
-      firebase.auth().onAuthStateChanged(async (user) => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
-          const userInfo = await userCollection.doc(user.uid).get()
+          const userInfo = await getDoc(doc(database, 'users', user.uid))
+          console.log(userInfo.data(), user.uid);
           commit('updateUser', {
             profilePicture: user.photoURL,
             name: user.displayName,
