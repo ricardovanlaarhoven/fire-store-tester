@@ -27,7 +27,7 @@
 import dayjs from '@/plugins/dayjs.js';
 import AddPostDialog from '@/components/addPostDialog.vue';
 import { mapGetters, mapState } from 'vuex';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc,  doc} from 'firebase/firestore';
 import { database } from '@/plugins/firebase/store.js';
 
 export default {
@@ -56,7 +56,7 @@ export default {
       this.posts.push(post);
     },
     async deletePost(id) {
-      await collection(database, 'posts').doc(id).delete();
+      await deleteDoc(doc(database, 'posts', id));
       this.posts = this.posts.filter(post => post.id !== id);
     },
     async fetch() {
